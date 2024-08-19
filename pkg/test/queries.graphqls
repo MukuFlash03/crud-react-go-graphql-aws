@@ -1,0 +1,13 @@
+query {
+  tasks {
+    id
+    title
+    completed
+  }
+}
+
+mutation create{
+  createTask(input: {title: "something"}){
+    title
+  }
+}
