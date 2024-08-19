@@ -2788,14 +2788,14 @@ func (ec *executionContext) unmarshalInputUpdateTaskInput(ctx context.Context, o
 		switch k {
 		case "title":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("title"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
 			it.Title = data
 		case "completed":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("completed"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			data, err := ec.unmarshalOBoolean2bool(ctx, v)
 			if err != nil {
 				return it, err
 			}

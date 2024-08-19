@@ -53,7 +53,6 @@ const CreateLink: React.FC = () => {
             className="mb2"
             type="text"
             value={formState.title}
-            // onChange={(e) => setNewTaskTitle(e.target.value)}
             onChange={handleChange}
             placeholder="New task title"
             name="title"

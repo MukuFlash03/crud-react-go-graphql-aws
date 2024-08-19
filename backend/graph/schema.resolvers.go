@@ -22,11 +22,37 @@ func (r *mutationResolver) CreateTask(ctx context.Context, input model.CreateTas
 }
 
 func (r *mutationResolver) UpdateTask(ctx context.Context, id string, input model.UpdateTaskInput) (*model.Task, error) {
-	panic(fmt.Errorf("not implemented: UpdateTask - updateTask"))
+	// panic(fmt.Errorf("not implemented: UpdateTask - updateTask"))
+
+	var task tasks.Task
+	task.ID = id
+	task.Completed = input.Completed
+
+	// Perform the update
+	updated := task.Update()
+	if !updated {
+		return nil, fmt.Errorf("failed to update task")
+	}
+
+	// Return the updated task
+	return &model.Task{
+		ID:        task.ID,
+		Title:     task.Title,
+		Completed: task.Completed,
+	}, nil
 }
 
 func (r *mutationResolver) DeleteTask(ctx context.Context, id string) (bool, error) {
-	panic(fmt.Errorf("not implemented: DeleteTask - deleteTask"))
+	// panic(fmt.Errorf("not implemented: DeleteTask - deleteTask"))
+	var task tasks.Task
+	task.ID = id
+	deleted := task.Delete()
+	
+	if !deleted {
+		return false, fmt.Errorf("task not found")
+	}
+	
+	return true, nil
 }
 
 func (r *queryResolver) Tasks(ctx context.Context) ([]*model.Task, error) {

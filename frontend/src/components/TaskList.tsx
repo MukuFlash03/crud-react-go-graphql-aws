@@ -2,7 +2,7 @@ import React from 'react';
 import Task from './Task';
 import { TaskData } from '@/lib/types';
 
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, useMutation, gql } from '@apollo/client';
 
 const GET_TASKS_QUERY = gql`
   query GetTasks {
@@ -14,13 +14,21 @@ const GET_TASKS_QUERY = gql`
   }
 `;
 
-const handleToggleTask = (id: string, completed: boolean) => {
-  // Implementation for toggling task
-};
+const UPDATE_TASK_MUTATION = gql`
+  mutation UpdateTask($id: ID!, $input: UpdateTaskInput!) {
+    updateTask(id: $id, input: $input) {
+      id
+      title
+      completed
+    }
+  }
+`;
 
-const handleDeleteTask = (id: string) => {
-  // Implementation for deleting task
-};
+const DELETE_TASK_MUTATION = gql`
+  mutation DeleteTask($id: ID!) {
+    deleteTask(id: $id)
+  }
+`;
 
 const TaskList: React.FC = () => {
   /*
@@ -40,7 +48,23 @@ const TaskList: React.FC = () => {
   };
   */
 
+  const [updateTask] = useMutation(UPDATE_TASK_MUTATION);
+  const [deleteTask] = useMutation(DELETE_TASK_MUTATION, {
+    refetchQueries: [{ query: GET_TASKS_QUERY }],
+  });
+
   const { loading, error, data } = useQuery<{ tasks: TaskData[] }>(GET_TASKS_QUERY);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
+
+  const handleToggleTask = (id: string, completed: boolean) => {
+    updateTask({ variables: { id, input: { completed: !completed } } });
+  };
+
+  const handleDeleteTask = (id: string) => {
+    deleteTask({ variables: { id } });
+  }
 
   return (
     <>
