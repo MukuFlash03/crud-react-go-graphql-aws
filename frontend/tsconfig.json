@@ -6,6 +6,10 @@
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": "./src",  // Set the base URL to your source folder
+    "paths": {
+      "@/*": ["*"]  // Maps @/ to the src directory
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
