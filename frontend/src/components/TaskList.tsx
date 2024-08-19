@@ -40,7 +40,6 @@ const TaskList: React.FC = () => {
   };
   */
 
-  // const { data } = useQuery(GET_TASKS_QUERY);
   const { loading, error, data } = useQuery<{ tasks: TaskData[] }>(GET_TASKS_QUERY);
 
   return (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { TaskData } from '@/lib/types';
 import TaskList from './TaskList';
+import CreateTask from './CreateTask';
 
 const UPDATE_TASK = gql`
   mutation UpdateTask($id: ID!, $input: UpdateTaskInput!) {
@@ -22,6 +23,7 @@ const DELETE_TASK = gql`
 const App: React.FC = () => {
   return (
     <>
+      <CreateTask />
       <TaskList />
     </>
   )
