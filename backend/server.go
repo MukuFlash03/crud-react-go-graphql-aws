@@ -32,7 +32,8 @@ func main() {
 
 	c := cors.New(cors.Options{
         // AllowedOrigins: []string{"http://localhost:3000"},
-        AllowedOrigins: []string{"*"},
+        // AllowedOrigins: []string{"*"},
+		AllowedOrigins: []string{"http://localhost:3000", "https://main.dxdk6yl98hdlp.amplifyapp.com"},
         AllowedMethods: []string{"GET", "POST", "OPTIONS"},
         AllowedHeaders: []string{"*"},
     })
@@ -46,7 +47,10 @@ func main() {
 
 	// log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	// log.Fatal(http.ListenAndServe(":"+port, router))	
-
-	log.Printf("connect to http://0.0.0.0:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, router))
+	
+	// log.Printf("connect to http://0.0.0.0:%s/ for GraphQL playground", port)
+	// log.Fatal(http.ListenAndServe("0.0.0.0:"+port, router))
+		
+	log.Printf("connect to https://0.0.0.0:%s/ for GraphQL playground", port)
+	log.Fatal(http.ListenAndServeTLS("0.0.0.0:"+port, "server.crt", "server.key", router))
 }

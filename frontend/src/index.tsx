@@ -7,7 +7,8 @@ import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@ap
 const httpLink = createHttpLink({
   // uri: 'http://localhost:8080/query',
   // uri: 'https://ec2-18-224-215-141.us-east-2.compute.amazonaws.com:8080/query',
-  uri: 'http://ec2-18-224-215-141.us-east-2.compute.amazonaws.com:8080/query',
+  // uri: 'http://ec2-18-224-215-141.us-east-2.compute.amazonaws.com:8080/query',
+  uri: 'https://ec2-18-224-215-141.us-east-2.compute.amazonaws.com:8080/query',
 });
 
 const client = new ApolloClient({
