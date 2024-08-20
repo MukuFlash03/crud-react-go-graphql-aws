@@ -1,43 +1,42 @@
-package database
+package postgres
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
-	// "os"
-	"database/sql"
+	"os"
 
 	"github.com/MukuFlash03/task-manager/pkg/utils"
 
 	"github.com/golang-migrate/migrate/v4"
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	"github.com/golang-migrate/migrate/v4/source/iofs"
 	_ "github.com/lib/pq"
 )
 
-const (
-    host     = "localhost"
-    port     = 5432
-    user     = "mukuflash"
-    password = "mukuflash"
-    dbname   = "crud_tasks"
+var (
+	host     = os.Getenv("DB_HOST")
+	port     = os.Getenv("DB_PORT")
+	user     = os.Getenv("DB_USER")
+	password = os.Getenv("DB_PASSWORD")
+	dbname   = os.Getenv("DB_NAME")
 )
 
-var PG_DB_URL = fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", user, password, host, port, dbname)
-const MIGRATION_PATH = "file://internal/pkg/db/migrations/postgres"
+var PG_DB_URL = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=require", user, password, host, port, dbname)
 
 var Db *sql.DB
 
 func InitDB() {
-	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+	psqlconn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=require", host, port, user, password, dbname)
 
-    db, err := sql.Open("postgres", psqlconn)
-    utils.CheckError(err, "panic")
-      
-    err = db.Ping()
-    utils.CheckError(err, "panic")
- 
+	db, err := sql.Open("postgres", psqlconn)
+	utils.CheckError(err, "panic")
+
+	err = db.Ping()
+	utils.CheckError(err, "panic")
+
 	Db = db
-    fmt.Println("Connected!")
+	fmt.Println("Connected!")
 }
 
 func CloseDB() error {
@@ -45,18 +44,24 @@ func CloseDB() error {
 }
 
 func Migrate() {
-	m, err := migrate.New(
-		"file://internal/pkg/db/migrations/postgres",
-		PG_DB_URL,
-	)
+	d, err := iofs.New(migrations, "migrations")
+	if err != nil {
+		log.Fatalf("couldn't create iofs driver: %v", err)
+	}
 
-    if err != nil {
-        log.Fatalf("Error creating migration instance: %v", err)
-    }
+	driver, err := postgres.WithInstance(Db, &postgres.Config{})
+	if err != nil {
+		log.Fatalf("couldn't create the postgres driver: %v", err)
+	}
 
-    if err := m.Up(); err != nil && err != migrate.ErrNoChange {
-        log.Fatalf("Error running migrations: %v", err)
-    }
+	m, err := migrate.NewWithInstance("iofs", d, "postgres", driver)
+	if err != nil {
+		log.Fatalf("migrate.NewWithInstance failed: %v", err)
+	}
 
-    log.Println("Migrations completed successfully")
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Fatalf("An error occurred while syncing the database: %v", err)
+	}
+
+	log.Println("Migrations completed successfully")
 }
