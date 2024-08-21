@@ -1,5 +1,7 @@
 ## CRUD Web App for Task Management
 
+Frontend deployment - [Try it out!](https://main.dxdk6yl98hdlp.amplifyapp.com/)
+
 Tech Stack: React, Go, GraphQL, AWS [EC2, Amplify, RDS (Postgres)]
 
 Started off with these tutorials on [Go + GraphQL]([url](https://github.com/MukuFlash03/tutorial-go-graphql)), [React + GraphQL]([url](https://github.com/MukuFlash03/tutorial-react-apollo-graphql)) 
