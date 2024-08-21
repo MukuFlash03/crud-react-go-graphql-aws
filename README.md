@@ -4,7 +4,7 @@ Frontend deployment - [Try it out!](https://main.dxdk6yl98hdlp.amplifyapp.com/)
 
 Tech Stack: React, Go, GraphQL, AWS [EC2, Amplify, RDS (Postgres)]
 
-Started off with these tutorials on [Go + GraphQL]([url](https://github.com/MukuFlash03/tutorial-go-graphql)), [React + GraphQL]([url](https://github.com/MukuFlash03/tutorial-react-apollo-graphql)) 
+Started off with these tutorials on [Go + GraphQL](https://github.com/MukuFlash03/tutorial-go-graphql), [React + GraphQL](https://github.com/MukuFlash03/tutorial-react-apollo-graphql) 
 
 Decided to take a step further by building and deploying and end-to-end full-stack web app
 
